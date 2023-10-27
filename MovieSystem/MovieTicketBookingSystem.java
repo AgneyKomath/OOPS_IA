@@ -10,7 +10,7 @@ public class MovieTicketBookingSystem {
         Scanner sc = new Scanner(System.in);
         Vector<Movie> movies = new Vector<>();
 
-        Movie movie1 = new Movie("Inception", "Barbie", 250.0, 100);
+        Movie movie1 = new Movie("Baahubali", "Comedy", 250.0, 100);
         movie1.addShowTime("10:00 AM");
         movie1.addShowTime("2:00 PM");
         movie1.addShowTime("7:00 PM");
@@ -20,7 +20,7 @@ public class MovieTicketBookingSystem {
         movie2.addShowTime("4:00 PM");
         movie2.addShowTime("8:00 PM");
 
-        Movie movie3 = new Movie("Barbie", "Science Fiction", 150.0, 100);
+        Movie movie3 = new Movie("Barbie", "Action", 150.0, 100);
         movie3.addShowTime("7:00 AM");
         movie3.addShowTime("6:00 PM");
         movie3.addShowTime("11:00 PM");
