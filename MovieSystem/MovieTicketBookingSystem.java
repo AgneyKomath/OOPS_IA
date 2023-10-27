@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.Vector;
 
-
 public class MovieTicketBookingSystem {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -21,7 +20,7 @@ public class MovieTicketBookingSystem {
         movie2.addShowTime("4:00 PM");
         movie2.addShowTime("8:00 PM");
 
-        Movie movie3 = new Movie("Baahubali", "Science Fiction", 150.0, 100);
+        Movie movie3 = new Movie("Barbie", "Science Fiction", 150.0, 100);
         movie3.addShowTime("7:00 AM");
         movie3.addShowTime("6:00 PM");
         movie3.addShowTime("11:00 PM");
@@ -45,10 +44,11 @@ public class MovieTicketBookingSystem {
                 case 1:
                     System.out.println("\nAvailable Movies:");
                     for (int i = 0; i < movies.size(); i++) {
-                        System.out.println((i + 1) + ". " + movies.get(i).getTitle()+"\tPrice: "+movies.get(i).getTicketPrice()+"\tShowTimes: "+movies.get(i).getShowTimes());
+                        System.out.println((i + 1) + ". " + movies.get(i).getTitle() + "\tPrice: "
+                                + movies.get(i).getTicketPrice() + "\tShowTimes: " + movies.get(i).getShowTimes());
                     }
                     break;
-                    
+
                 case 2:
                     System.out.print("\nEnter the movie number: ");
                     int movieNumber = sc.nextInt();
@@ -73,7 +73,8 @@ public class MovieTicketBookingSystem {
 
                             if (selectedMovie.bookTickets(selectedShowTime, numSeats)) {
                                 double totalPrice = numSeats * selectedMovie.getTicketPrice();
-                                System.out.println("\nTickets booked successfully for " + selectedMovie.getTitle() + " at " + selectedShowTime);
+                                System.out.println("\nTickets booked successfully for " + selectedMovie.getTitle()
+                                        + " at " + selectedShowTime);
                                 System.out.println("Total Price: ₹" + totalPrice);
 
                             } else {
@@ -90,7 +91,7 @@ public class MovieTicketBookingSystem {
                     break;
 
                 case 3:
-                    System.out.println("\nPurchased Tickets:"); 
+                    System.out.println("\nPurchased Tickets:");
 
                     for (Movie movie : movies) {
                         Vector<Ticket> bookedTickets = movie.getBookedTickets();
@@ -113,7 +114,8 @@ public class MovieTicketBookingSystem {
 
                             // Calculate and display the total seats booked for the movie
                             int totalSeatsPurchasedForMovie = bookedTickets.size();
-                            System.out.println("Total Seats Purchased for " + movie.getTitle() + ": " + totalSeatsPurchasedForMovie);
+                            System.out.println("Total Seats Purchased for " + movie.getTitle() + ": "
+                                    + totalSeatsPurchasedForMovie);
                         }
                     }
                     break;
@@ -128,44 +130,42 @@ public class MovieTicketBookingSystem {
                     System.out.print("\nEnter the movie number: ");
                     int cancelMovieNumber = sc.nextInt();
                     sc.nextLine();
-                    
+
                     if (cancelMovieNumber >= 1 && cancelMovieNumber <= movies.size()) {
                         Movie selectedMovie = movies.get(cancelMovieNumber - 1);
                         Vector<Ticket> bookedTickets = selectedMovie.getBookedTickets();
-                    
+
                         if (!bookedTickets.isEmpty()) {
                             System.out.println("\nSelect the showtime to cancel a ticket for:");
-                    
+
                             for (int i = 0; i < selectedMovie.getShowTimes().size(); i++) {
                                 System.out.println((i + 1) + ". " + selectedMovie.getShowTimes().get(i));
                             }
-                    
+
                             System.out.print("\nEnter the showtime number: ");
                             int cancelShowtimeNumber = sc.nextInt();
                             sc.nextLine();
-                    
-                            if (cancelShowtimeNumber >= 1 && cancelShowtimeNumber <= selectedMovie.getShowTimes().size()) {
+
+                            if (cancelShowtimeNumber >= 1
+                                    && cancelShowtimeNumber <= selectedMovie.getShowTimes().size()) {
                                 String selectedShowtime = selectedMovie.getShowTimes().get(cancelShowtimeNumber - 1);
                                 System.out.print("\nEnter the number of seats to cancel:");
                                 int numSeatsToCancel = sc.nextInt();
                                 sc.nextLine();
-                    
+
                                 if (selectedMovie.cancelTicket(numSeatsToCancel)) {
-                                    System.out.println("\n" + numSeatsToCancel + " seat(s) canceled successfully for " + selectedMovie.getTitle() + " at " + selectedShowtime);
-                                }                                 
-                                else {
+                                    System.out.println("\n" + numSeatsToCancel + " seat(s) canceled successfully for "
+                                            + selectedMovie.getTitle() + " at " + selectedShowtime);
+                                } else {
                                     System.out.println("\nTicket cancellation failed. Invalid number of seats.");
                                 }
-                            } 
-                            else {
+                            } else {
                                 System.out.println("\nInvalid showtime number.");
                             }
-                        } 
-                        else {
+                        } else {
                             System.out.println("\nNo purchased tickets for this movie.");
                         }
-                    } 
-                    else {
+                    } else {
                         System.out.println("\nInvalid movie number.");
                     }
                     break;
