@@ -67,54 +67,89 @@ public class MovieTicketBookingSystem {
 
                         if (showTimeNumber >= 1 && showTimeNumber <= selectedMovie.getShowTimes().size()) {
                             String selectedShowTime = selectedMovie.getShowTimes().get(showTimeNumber - 1);
-                            System.out.print("\nEnter the number of seats you want to buy: ");
-                            int numSeats = sc.nextInt();
-                            sc.nextLine();
+                            System.out.print("\nDo you want to book VIP tickets? (Y/N): ");
+                            String vipChoice = sc.nextLine();
 
-                            if (selectedMovie.bookTickets(selectedShowTime, numSeats)) {
-                                double totalPrice = numSeats * selectedMovie.getTicketPrice();
-                                System.out.println("\nTickets booked successfully for " + selectedMovie.getTitle()
-                                        + " at " + selectedShowTime);
-                                System.out.println("Total Price: ₹" + totalPrice);
+                            if (vipChoice.equalsIgnoreCase("Y")) {
+                                System.out.print("\nEnter the number of VIP seats you want to buy: ");
+                                int numVipSeats = sc.nextInt();
+                                sc.nextLine();
 
+                                if (selectedMovie.bookVipTickets(selectedShowTime, numVipSeats)) {
+                                    double vipTicketPrice = selectedMovie.getTicketPrice() * 1.5; // 50% extra price for
+                                                                                                  // VIP
+                                    double totalPrice = numVipSeats * vipTicketPrice;
+                                    System.out
+                                            .println("\nVIP Tickets booked successfully for " + selectedMovie.getTitle()
+                                                    + " at " + selectedShowTime);
+                                    System.out.println("Total Price (VIP): ₹" + totalPrice);
+                                } else {
+                                    System.out.println("\nSorry, not enough VIP seats available for this show.");
+                                }
                             } else {
-                                System.out.println("\nSorry, not enough seats available for this show.");
-                            }
+                                System.out.print("\nEnter the number of regular seats you want to buy: ");
+                                int numSeats = sc.nextInt();
+                                sc.nextLine();
 
+                                if (selectedMovie.bookTickets(selectedShowTime, numSeats)) {
+                                    double totalPrice = numSeats * selectedMovie.getTicketPrice();
+                                    System.out.println(
+                                            "\nRegular Tickets booked successfully for " + selectedMovie.getTitle()
+                                                    + " at " + selectedShowTime);
+                                    System.out.println("Total Price (Regular): ₹" + totalPrice);
+                                } else {
+                                    System.out.println("\nSorry, not enough regular seats available for this show.");
+                                }
+                            }
                         } else {
                             System.out.println("\nInvalid show time number.");
                         }
-
                     } else {
                         System.out.println("\nInvalid movie number.");
                     }
                     break;
-
                 case 3:
                     System.out.println("\nPurchased Tickets:");
 
                     for (Movie movie : movies) {
                         Vector<Ticket> bookedTickets = movie.getBookedTickets();
+                        Vector<VipTicket> bookedVipTickets = movie.getBookedVipTickets(); // Add this line
 
-                        if (!bookedTickets.isEmpty()) {
+                        if (!bookedTickets.isEmpty() || !bookedVipTickets.isEmpty()) { // Modify this condition
                             System.out.println("\nTickets for " + movie.getTitle() + ":");
 
-                            // Create a Map to group tickets by showtime
+                            // Create a Map to group regular tickets by showtime
                             Map<String, Integer> showtimeSeatCount = new HashMap<>();
-
                             for (Ticket ticket : bookedTickets) {
                                 String showTime = ticket.getShowTime();
                                 showtimeSeatCount.put(showTime, showtimeSeatCount.getOrDefault(showTime, 0) + 1);
                             }
 
+                            // Create a Map to group VIP tickets by showtime
+                            Map<String, Integer> showtimeSeatCountVip = new HashMap<>();
+                            for (VipTicket vipTicket : bookedVipTickets) { // Iterate through VIP tickets
+                                String showTime = vipTicket.getShowTime();
+                                showtimeSeatCountVip.put(showTime, showtimeSeatCountVip.getOrDefault(showTime, 0) + 1);
+                            }
+
+                            // Display regular tickets by showtime
                             for (Map.Entry<String, Integer> entry : showtimeSeatCount.entrySet()) {
-                                System.out.println("Show Time: " + entry.getKey());
-                                System.out.println("Total Seats Purchased for this showtime: " + entry.getValue());
+                                System.out.println("\nShow Time: " + entry.getKey());
+                                System.out.println(
+                                        "Total Regular Seats Purchased for this showtime: " + entry.getValue());
+                            }
+
+                            // Display VIP tickets by showtime
+                            for (Map.Entry<String, Integer> entry : showtimeSeatCountVip.entrySet()) {
+                                System.out.println("\nShow Time: " + entry.getKey());
+                                System.out.println("Total ****VIP**** Seats Purchased for this showtime: " + entry.getValue());
                             }
 
                             // Calculate and display the total seats booked for the movie
-                            int totalSeatsPurchasedForMovie = bookedTickets.size();
-                            System.out.println("Total Seats Purchased for " + movie.getTitle() + ": "
+                            int totalSeatsPurchasedForMovie = bookedTickets.size() + bookedVipTickets.size(); // Modify
+                                                                                                              // this
+                                                                                                              // line
+                            System.out.println("\nTotal Seats Purchased for " + movie.getTitle() + ": "
                                     + totalSeatsPurchasedForMovie);
                         }
                     }

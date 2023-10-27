@@ -9,6 +9,7 @@ class Movie {
     private int totalSeats;
     private Vector<String> showTimes;
     private Vector<Ticket> bookedTickets;
+    private Vector<VipTicket> bookedVipTickets; // Add a Vector for VIP tickets
 
     public Movie(String title, String genre, double ticketPrice, int totalSeats) {
         this.title = title;
@@ -17,6 +18,7 @@ class Movie {
         this.totalSeats = totalSeats;
         this.showTimes = new Vector<>();
         this.bookedTickets = new Vector<>();
+        this.bookedVipTickets = new Vector<>(); // Initialize the VIP ticket Vector
     }
 
     public String getTitle() {
@@ -54,8 +56,23 @@ class Movie {
         return false;
     }
 
+    public boolean bookVipTickets(String showTime, int numSeats) {
+        if (totalSeats >= numSeats) {
+            for (int i = 0; i < numSeats; i++) {
+                bookedVipTickets.add(new VipTicket(this, showTime, "VIP Access")); // Create VIP tickets
+            }
+            totalSeats -= numSeats;
+            return true;
+        }
+        return false;
+    }
+
     public Vector<Ticket> getBookedTickets() {
         return bookedTickets;
+    }
+
+    public Vector<VipTicket> getBookedVipTickets() {
+        return bookedVipTickets;
     }
 
     public boolean cancelTicket(int numSeatsToCancel) {
